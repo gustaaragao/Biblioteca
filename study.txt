@@ -1,0 +1,12 @@
+guloso
+binary search
+bitmask
+o básico de teoria dos números
+o básico de grafos (dfs, bfs, dijkstra, floyd warshall)
+prefix sum
+combinatória
+dp
+
+fenwick tree
+line sweep
+segment tree
