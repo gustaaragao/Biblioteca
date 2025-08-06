@@ -17,9 +17,6 @@ const ll MOD = 1000000007;
 const int INF = 0x3f3f3f3f;
 const ll LINF = 0x3f3f3f3f3f3f3f3fll;
 
-int main(){ _
 
-    
-
-    return 0;
+signed main(){ _
 }
