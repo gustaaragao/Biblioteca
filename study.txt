@@ -10,3 +10,6 @@ dp
 fenwick tree
 line sweep
 segment tree
+
+data structures do c++
+memset vs fill
