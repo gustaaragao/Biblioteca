@@ -60,7 +60,7 @@ Considere uma array a[n].
 
 Problema: Nosso objetivo é encontrar a maior subsequência estritamente crescente de a.
 
-Subproblema: Vamos considerar que dp[k] é a maior subsequencia que termina no índice k.
+Subproblema: Vamos considerar que dp[k] é o tamanho da maior subsequencia que termina no índice k.
 
 - dp[k] = {i1, i2, ..., ik} é a resposta para esse subproblema.
 

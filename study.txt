@@ -13,3 +13,6 @@ segment tree
 
 data structures do c++
 memset vs fill
+
+lis
+Coordinate Compression ou Dynamic SegTree
