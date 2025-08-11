@@ -5,53 +5,45 @@ using namespace std;
 #define endl '\n'
 #define all(x) (x).begin(), (x).end()
 
+int lis(vector<int> const& a) {
+    int n = a.size();
+    const int INF = 1e9;
+    vector<int> dp(n + 1, INF);
 
-#define MAXN 1000
+    dp[0] = -INF;
 
-int dp[MAXN + 1];
-int p[MAXN + 1];    // Serve para exibir a solução
+    for (int i = 0; i < n; i++) {
+        // Solução trivial
+        // for (int l = 1; l <= i; l++) {
+        //     if (dp[l-1] < a[i] && a[i] < dp[l]) {
+        //         dp[l] = a[i];
+        //     }
+        // }
+        
+        // dp é estritamente crescente e a[i] atualiza apenas um valor de dp[l] 
+        // dp[l - 1] < a[i] < dp[l] --> Podemos encontrar o l a partir da Busca Binária
+        int l = upper_bound(all(dp), a[i]) - dp.begin();
+        if (dp[l-1] < a[i] && a[i] < dp[l]) {
+            dp[l] = a[i];
+        }
+    }
+
+    int ans = 0;
+    for (int l = 0; l <= n; l++) {
+        if (dp[l] < INF) ans = l;
+    }
+
+    return ans;
+}
 
 signed main(){ _
-    
     int n; cin >> n;
     vector<int> a(n);
     for (auto &x : a) cin >> x;
 
-    for (int i = 0; i < n; i++) {
-        dp[i] = 1; p[i] = -1;
-        for (int j = 0; j < i; j++) {
-            if (a[j] < a[i] && dp[i] < dp[j] + 1){
-                // dp[i] = max(dp[i], dp[j] + 1);
-                dp[i] = dp[j] + 1;
-                p[i] = j;
-            }
-        }
-    }
+    int ans = lis(a);
 
-    int ans = dp[0], pos = 0;
-    for (int i = 1; i < n; i++) {
-        if (ans < dp[i]) {
-            // ans = max(ans, dp[i]);
-            ans = dp[i];
-            pos = i;
-        }
-    }
-
-    // Mostrando a solucao
     cout << ans << endl;
-
-    // Exibindo a subsequencia da solucao
-    vector<int> subseq;
-    while (pos != -1) {
-        subseq.push_back(a[pos]);
-        pos = p[pos];
-    }
-
-    reverse(all(subseq));
-    for (auto x : subseq) {
-        cout << x << " ";
-    }
-    cout << endl;
 }
 
 /* https://cp-algorithms.com/sequences/longest_increasing_subsequence.html
@@ -59,16 +51,33 @@ Considere uma array a[n].
 
 Problema: Nosso objetivo é encontrar a maior subsequência estritamente crescente de a.
 
-Subproblema: Vamos considerar que dp[k] é a maior subsequencia que termina no índice k.
+Subproblema: Vamos considerar que dp[l] é menor valor que um subsequência estritamente crescente de tamanho l termina.
 
-- dp[k] = {i1, i2, ..., ik} é a resposta para esse subproblema.
+- dp[0] = -INF (Caso base)
 
-- i1 < i2 < ... < ik  --> a[i1] < a[i2] < ... < a[ik]
+Vamos iniciar dp[l] = INF e vamos processar cada a[i] com 0 <= i <= n
 
-Logo, a resposta do nosso Problema é max(dp[])!
+Exemplo: a = {8, 3, 4, 6, 5, 2, 0, 7, 9, 1}
 
-dp[i] = 1, se a subsequência for {a[i]}
-       = max(dp[j] + 1), para j < i e a[j] < a[i]
+prefix = {}                             --> d = {-INF, INF, INF, ..., INF}
+prefix = {8}                            --> d = {-INF, 8, INF, ..., INF}
+prefix = {8, 3}                         --> d = {-INF, 3, INF, ..., INF}
+prefix = {8, 3, 4}                      --> d = {-INF, 3, 4, ..., INF}
+prefix = {8, 3, 4, 6}                   --> d = {-INF, 3, 4, 6, ..., INF}
+prefix = {8, 3, 4, 6, 5}                --> d = {-INF, 3, 4, 5, ..., INF}
+prefix = {8, 3, 4, 6, 5, 2}             --> d = {-INF, 2, 4, 5, ..., INF}
+prefix = {8, 3, 4, 6, 5, 2, 0}          --> d = {-INF, 0, 4, 5, ..., INF}
+prefix = {8, 3, 4, 6, 5, 2, 0, 7}       --> d = {-INF, 0, 4, 5, 7, ..., INF}
+prefix = {8, 3, 4, 6, 5, 2, 0, 7, 9}    --> d = {-INF, 0, 4, 5, 7, 9, ..., INF}
+prefix = {8, 3, 4, 6, 5, 2, 0, 7, 9, 1} --> d = {-INF, 0, 1, 5, 7, 9, ..., INF}
 
-dp[i] = max(1, max(d[j] + 1)), onde j < i e a[j] < a[i]
+Quando vamos fazer d[l] = a[i]?
+- Quando tiver nenhuma lis de tamanho l que termine em a[i]
+- E, se não tiver nenhuma outra lis de tamanho l que termina em algum número menor que a[i]
+
+Note que há uma sub-estrutura ótima do problema, a solução para l pode ser construída a partir de l - 1
+
+dp[l] = -INF, se l = 0
+        min(a[i], d[l]), se a[i] > d[l - 1] 
+        +INF, caso contrário.
 */
