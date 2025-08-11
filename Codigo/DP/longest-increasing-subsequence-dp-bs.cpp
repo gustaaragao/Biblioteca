@@ -5,10 +5,15 @@ using namespace std;
 #define endl '\n'
 #define all(x) (x).begin(), (x).end()
 
-int lis(vector<int> const& a) {
+// O(n*log(n)) --> Solução TOP
+
+// int lis(vector<int> const& a) {
+vector<int> lis(vector<int> const& a) {
     int n = a.size();
     const int INF = 1e9;
     vector<int> dp(n + 1, INF);
+    vector<int> id_dp(n + 1, -1);       // Armazena o índice i do valor dp[l] = a[i] 
+    vector<int> previous(n + 1, -1);    // Armazena o índice do dp[l - 1]
 
     dp[0] = -INF;
 
@@ -25,6 +30,8 @@ int lis(vector<int> const& a) {
         int l = upper_bound(all(dp), a[i]) - dp.begin();
         if (dp[l-1] < a[i] && a[i] < dp[l]) {
             dp[l] = a[i];
+            id_dp[l] = i;
+            previous[i] = id_dp[l-1];
         }
     }
 
@@ -32,8 +39,21 @@ int lis(vector<int> const& a) {
     for (int l = 0; l <= n; l++) {
         if (dp[l] < INF) ans = l;
     }
+        
+    // Apenas retornar a resposta
+    // return ans;
 
-    return ans;
+    // Reconstruir a subsequência
+    vector<int> subseq;
+
+    int pos = id_dp[ans];
+    while (pos != -1) {
+        subseq.push_back(a[pos]);
+        pos = previous[pos];
+    }
+
+    reverse(all(subseq));
+    return subseq;
 }
 
 signed main(){ _
@@ -41,9 +61,14 @@ signed main(){ _
     vector<int> a(n);
     for (auto &x : a) cin >> x;
 
-    int ans = lis(a);
+    // int ans = lis(a);
+    // cout << ans << endl;
 
-    cout << ans << endl;
+    vector<int> ans = lis(a);
+    for (auto x : ans) {
+        cout << x << " ";
+    }
+    cout << endl;
 }
 
 /* https://cp-algorithms.com/sequences/longest_increasing_subsequence.html

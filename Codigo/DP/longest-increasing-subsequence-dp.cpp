@@ -11,7 +11,7 @@ using namespace std;
 int dp[MAXN + 1];
 int p[MAXN + 1];    // Serve para exibir a solução
 
-// O(nlog(n))
+// O(n²) --> Solução não tão legal
 signed main(){ _
     
     int n; cin >> n;
