@@ -8,10 +8,12 @@ using namespace std;
 
 #define MAXN 1000
 
-int dp[MAXN + 1];
+int dp[MAXN + 1];   
 int p[MAXN + 1];    // Serve para exibir a solução
 
 // O(n²) --> Solução não tão legal
+// dp[i] --> é o tamanho l da LIS que termina com a[i]
+// solução é max(d[i])
 signed main(){ _
     
     int n; cin >> n;

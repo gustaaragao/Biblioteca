@@ -6,6 +6,9 @@ using namespace std;
 #define all(x) (x).begin(), (x).end()
 
 // O(n*log(n)) --> Solução TOP
+// dp[l] --> é o menor a[i] que a maior LIS de tamanho l termina 
+// solução é maior l t.q d[l] não é INF
+// Obs.: Essa solução não serve para contar o número de LIS da a[], precisa usar lis-ds.
 
 // int lis(vector<int> const& a) {
 vector<int> lis(vector<int> const& a) {

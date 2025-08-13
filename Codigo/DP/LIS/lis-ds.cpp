@@ -39,17 +39,18 @@ struct fenw {
         n = size;
         bit.assign(size + 1, 0);
     }
-    // query do prefixo a[0] + a[1] + ... + a[r]
+    // query do maior prefixo a[0...r]
     int qry(int r) {
         int ans = 0;
         for (int i = r + 1; i > 0; i -= i & -i) // i & -i retorna os bits menos signativos de i 
-            ans += bit[i];
+            ans = max(ans, bit[i]);
         return ans;
     }
 
     // atualiza o valor a[r] = x
     void upd(int r, int x) {
-        for (int i = r + 1; i <= n; i += i & -i) bit[i] += x;
+        for (int i = r + 1; i <= n; i += i & -i) 
+            bit[i] = max(bit[i], x);
     }
 };
 
@@ -59,11 +60,13 @@ int lis(vector<int> &a) {
     int n = a.size();
 
     fenw tree(n + 1);
-    for (int i = 0; i < n; i++) {
-        tree.upd(a[i], n);
-    }
 
-    int ans = tree.qry(n);
+    int ans = 0;
+    for (int i = 0; i < n; i++) {
+        int best = tree.qry(a[i] - 1);
+        tree.upd(a[i], best + 1);
+        ans = max(ans, best + 1);
+    }
 
     return ans;
 }
@@ -77,20 +80,16 @@ signed main(){ _
     cout << lis(a) << endl;
 }
 
-/* https://cp-algorithms.com/sequences/longest_increasing_subsequence.html#solution-in-on-log-n-with-data-structures
-
-dp[i] = max(1, max(dp[i], dp[j] + 1)), para j < i e a[j] < a[i]
-
-Podemos definir uma array t[] t.q. t[a[i]] = dp[i]
-
-O problema de descobrir dp[i] vira achar o maior valor em um prefixo de t[].
-
-dp[i] = max(t[0...(a[i]-1)] + 1)
-
-O problema de achar o maior valor de um prefixo em uma array que muda é um problema
-de SegTree e BIT.
-
---- Pontos Negativos da Solução
-- Implementação Complexa
-- a[i] for mt grande --> Coordinate Compression ou Dynamic SegTree
+// https://cp-algorithms.com/sequences/longest_increasing_subsequence.html#solution-in-on-log-n-with-data-structures
+// Considere t[a[i]] = dp[i] # dp[i] é o maior l de LIS t.q termina com a[i]
+/* Para calcular dp[], precisamos fazer:
+ans = -INF;
+Para i = 0 até 0:
+    dp[i] = max(t[0...a[i]] + 1) // Maior prefixo até a[i]
+    ans = max(ans, dp[i])
+    # O problema é buscar o maior prefixo de a[0..i] com a[k]  mudando, 
+    sendo 0 <= k < i. --> SegTree ou BIT
+    # Pontos Negativos da Solução
+        - Implementação Complexa
+        - a[i] for mt grande --> Coordinate Compression ou Dynamic SegTree
 */

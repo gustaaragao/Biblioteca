@@ -1,3 +1,4 @@
+# Recomendações de Lucas
 guloso
 binary search
 bitmask
@@ -7,12 +8,22 @@ prefix sum
 combinatória
 dp
 
-fenwick tree
-line sweep
-segment tree
+# Tópicos apareceram ao estudar
+- fenwick tree --> Finalizar aula da USP e estudar CP-Algoritms
+- line sweep -> melhorar o código com a maneira como exibir e adicionar questão de geometria
+    -> https://cp-algorithms.com/geometry/intersecting_segments.html
+- segment tree
+- aritmetica modular
+    a * b = (a % MOD) * (b % MOD) % MOD
+    a + b = (a + b) % MOD
+    a - b = (a - b + MOD) % MOD
+    a / b = INVERSO MODULAR # Estudar
 
-data structures do c++
-memset vs fill
 
-lis
+- data structures do c++ --> multiset
+
+- memset vs fill
+
 Coordinate Compression ou Dynamic SegTree
+
+delta encoding ou array differentiation
